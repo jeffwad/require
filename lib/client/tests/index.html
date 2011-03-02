@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8 />
+		<title>require test suite</title>
+
+		<link rel="stylesheet" type="text/css" href="lib/jasmine-1.0.1/jasmine.css">
+		
+		<script src="/require.js"></script>
+		<script src="lib/jasmine-1.0.1/jasmine.js"></script>
+		<script src="lib/jasmine-1.0.1/jasmine-html.js"></script>
+
+
+		<!-- include spec files here... -->
+		<!--script src="spec/iter.js"></script>
+		<script src="spec/async.js"></script>
+		<script src="spec/worker.js"></script-->
+		<script src="spec/socket.js"></script>
+
+	</head>
+	<body>
+		<script>
+			//	 todo
+			//require("/tests/main");
+
+			//	for now
+		  	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+		  	jasmine.getEnv().execute();
+		</script>
+	</body>
+</html>
