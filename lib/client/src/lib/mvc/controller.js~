@@ -1,0 +1,32 @@
+/*
+	@name: 				mod.mvc.controler
+	
+	@description: 		Core controller object
+	
+	@author: 			Simon Jefford
+	
+*/
+var object					 = require("object").object,
+	eventDispatcher			 = require("events").eventDispatcher,
+	bindAsEventListener		 = require("func").bindAsEventListener;
+
+exports = object({
+	
+	constructor: "mod.mvc.controller",
+									
+	fireEvent: function(event, data) {
+		
+		var e = {
+			type: event,
+			status: 200,
+			data: data || {}
+		};
+		console.log(e);
+		eventDispatcher.fire(e);
+	},
+
+	addListener: function(e, listener) {
+		return eventDispatcher.addListener(e, bindAsEventListener(listener, this));	
+	}
+
+});

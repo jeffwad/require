@@ -1,0 +1,89 @@
+/*
+	@name: 				mod.mvc.view
+	
+	@description: 		Core view object
+
+	@prototypes: 		mod.protoypes.children
+						mod.protoypes.event
+	
+	@author: 			Simon Jefford
+	
+*/
+var object					 = require("object").object,
+	extend					 = require("object").extend,
+	forEach					 = require("enum").forEach,
+	event					 = require("mod.prototypes.event"),
+	children				 = require("mod.prototypes.children"),		
+	template				 = require("mod.mvc.template"),
+	$						 = require("mod.dom.core");
+
+
+exports = object(object(children, event), {
+	
+	constructor: "mod.mvc.view",
+								
+	draw: function(parent) {
+		
+		var container;
+		this.__draw__(parent);
+		if(this.children instanceof Array) {
+			container = this.getChildContainer();
+			forEach(this.children, function(view) {
+				view.draw(container);
+			});
+		}
+	},
+	
+	__draw__: function(parent) {
+		var template = this.templates.process("layout", this.templateData || {});
+		$(parent)[0].appendChild(template);
+		this.root = $(template);
+	},
+	
+	getChildContainer: function() {
+		var container = $("#child-container");
+		if(container.length === 1) {
+			container[0].removeAttribute("id");
+		}
+		else {
+			container = this.root;
+		}		
+		return  container;
+	},
+
+	initListeners: function() {
+		this.__initListeners__.apply(this, arguments);
+		if(this.children instanceof Array) {
+			forEach(this.children, function(view) {
+				view.initListeners.apply(view, arguments);
+			});
+		}
+	},
+	
+	__initListeners__: function() {
+		//	to be implemented by objects further up the prototype chain
+	},
+	
+	loadTemplates: function(templates) {			
+		if(!this.hasOwnProperty("templates")) {
+			this.templates = object(template);
+		}
+		this.templates.load(templates);
+	},
+	
+	loadTemplateData: function(data) {
+		if(!this.hasOwnProperty("templateData")) {
+			this.templateData = {};
+		}
+		extend(this.templateData, data);
+	},
+	
+	show: function(){
+		this.root.show();
+	},
+	
+	hide: function(){
+		this.root.hide();
+	}
+
+}));

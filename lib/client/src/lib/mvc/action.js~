@@ -1,0 +1,59 @@
+/*
+	@name: 				mod.mvc.action
+	
+	@description: 		Core action object
+	
+	@author: 			Simon Jefford
+	
+*/
+var eventDispatcher 			= require("events").eventDispatcher,
+	bindAsEventListener			= require("func").bindAsEventListener;
+	
+	
+exports = {
+
+	constructor: "mod.mvc.action",
+					
+	initListeners: function() {
+		
+		this.toolListener = this.addListener("TOOL_SELECTED", function(e) {
+
+			if(e.data.tool === this.id) {
+				this.initiateTool();
+			}
+			else {
+				this.terminateTool();
+			}
+
+		});
+		
+	},
+	
+	fireEvent: function(e) {
+		console.log(e);
+		eventDispatcher.fire(e);
+	},
+
+	addListener: function(event, listener) {
+		return eventDispatcher.addListener(event, bindAsEventListener(listener, this));	
+	},
+
+	removeEventListeners: function() {
+		this.toolListener.stop();
+	},
+	
+	initiateTool: function() {
+		
+		this.onStart.start();
+		this.onStop.start();
+		this.onAbort.start();
+
+	},
+	
+	terminateTool: function() {
+		this.onStart.stop();
+		this.onStop.stop();
+		this.onAbort.stop();
+	}
+	
+};

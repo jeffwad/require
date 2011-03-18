@@ -1,0 +1,45 @@
+/*
+	@name: 				mod.mvc.command
+	
+	@description:		Core Command object
+												
+	@prototypes: 		mod.protoypes.children
+						mod.protoypes.event
+
+	@author:			Simon Jefford
+	
+*/
+var object				= require("object").object,
+	forEach				= require("enum").forEach,
+	children			= require("mod.prototypes.children"),
+	event				= require("mod.prototypes.event");
+
+
+exports = object(object(children, event), {
+	
+	constructor: "mod.mvc.command",
+		
+	execute: function()
+		
+		this.__execute__.apply(this, arguments);
+		
+		if(this.children instanceof Array) {
+			forEach(this.children, function(command) {
+				command.execute.apply(command, arguments);
+			});
+		}
+	
+	},
+
+	undo: function() {
+		
+		this.__undo__.apply(this, arguments);
+		
+		if(this.children instanceof Array) {
+			forEach(this.children, function(command) {
+				command.__undo__.apply(command, arguments);
+			});
+		}
+	}
+
+});
