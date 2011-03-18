@@ -1,0 +1,20 @@
+build tools for commonjs in the browser
+===
+
+Includes:
+
+Commonjs transport mechanism
+Pre packed library of modules including:
+
+Prototypal Inheritance
+Iter
+Async
+Worker
+Messaging/Event system
+
+Also contains:
+
+mvc framework
+first draft of WebGL API
+
+
